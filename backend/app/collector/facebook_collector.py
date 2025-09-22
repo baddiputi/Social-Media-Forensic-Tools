@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-facebook_collector_router = APIRouter(prefix="/collector/facebook", tags=["Facebook Collector"])
+facebook_collector_router = APIRouter(prefix="/facebook", tags=["Facebook Collector"])
 
 
 @facebook_collector_router.get("/test")
