@@ -588,6 +588,43 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 
 ---
 
+## 📸 Output
+
+### Data Collection
+Collect public posts from multiple platforms with keyword search, configurable limits, and date filters. Data is hashed with SHA-256 for forensic integrity and can be exported as CSV, JSON, or hash manifest.
+
+![Data Collection](screenshots/data_collection.jpg)
+
+---
+
+### Sentiment Analysis
+Classify collected posts into Positive, Neutral, Negative, and Threat categories with confidence scores. Export results as CSV or JSON.
+
+![Sentiment Analysis](screenshots/sentiment_analysis.jpg)
+
+---
+
+### Timeline Analysis
+Visualize posting trends over time with interactive line charts. Detect peak activity periods and unusual posting patterns.
+
+![Timeline Analysis](screenshots/timeline_analysis.jpg)
+
+---
+
+### Network Analysis
+Map the social network of users with interactive force-directed graphs. Identify top influencers, detect clusters, and flag suspicious connection patterns.
+
+![Network Analysis](screenshots/network_analysis.jpg)
+
+---
+
+### Interactive Network Graph
+Explore user connections with a fully interactive graph — hover to highlight nodes, view group colors, and inspect user details.
+
+![Interactive Network Graph](screenshots/network_graph.jpg)
+
+---
+
 ## 📬 Contact
 
 For questions, issues, or collaboration:
