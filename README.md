@@ -625,6 +625,20 @@ Explore user connections with a fully interactive graph — hover to highlight n
 
 ---
 
+### Geolocation Analysis
+Visualize the locations of users with negative sentiment on an interactive Leaflet map. Export the map as a PNG image.
+
+![Geolocation Analysis](screenshots/geolocation_analysis.jpg)
+
+---
+
+### Word Cloud
+D3-powered word cloud visualization of trending keywords and hashtags extracted from collected posts. Download as image.
+
+![Word Cloud](screenshots/word_cloud.jpg)
+
+---
+
 ## 📬 Contact
 
 For questions, issues, or collaboration:
