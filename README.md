@@ -642,7 +642,7 @@ D3-powered word cloud visualization of trending keywords and hashtags extracted 
 ## 📬 Contact
 
 For questions, issues, or collaboration:
-- **GitHub:** [venkatbaddiputi@gmail.com](https://github.com/baddiputi)
+- **GitHub:** [venkatbaddiputi](https://github.com/baddiputi)
 - **Repository:** [Social-Media-Forensic-Tools](https://github.com/baddiputi/Social-Media-Forensic-Tools)
 
 ---
