@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-instagram_collector_router = APIRouter(prefix="/instagram", tags=["Instagram Collector"])
+instagram_collector_router = APIRouter(prefix="/collector/instagram", tags=["Instagram Collector"])
 
 
 @instagram_collector_router.get("/test")

@@ -1,7 +1,8 @@
-// src/pages/WordCloud.jsx
+// src/pages/WordCloudPage.jsx
 
 import React, { useMemo, useState, useRef } from "react";
-// import WordCloud from "react-wordcloud";
+import * as d3 from "d3";
+import cloud from "d3-cloud";
 import { motion } from "framer-motion";
 import html2canvas from "html2canvas";
 import { FaDownload } from "react-icons/fa";
@@ -54,6 +55,8 @@ function WordCloudPage() {
   const [loading, setLoading] = useState(false);
   const [notification, setNotification] = useState("");
   const [words, setWords] = useState([]);
+  const [localKeywords, setLocalKeywords] = useState([]);
+  const [cloudWords, setCloudWords] = useState([]);
   const [fetching, setFetching] = useState(false);
   const [error, setError] = useState("");
   const wordCloudRef = useRef();
@@ -91,7 +94,55 @@ function WordCloudPage() {
       setFetching(false);
     };
     fetchData();
+    // Get local keywords from DataCollection
+    try {
+      const latest = localStorage.getItem("latestCollectedPosts");
+      if (latest) {
+        const parsed = JSON.parse(latest);
+        const posts = Array.isArray(parsed)
+          ? parsed
+          : parsed && Array.isArray(parsed.data)
+          ? parsed.data
+          : [];
+        const set = new Set();
+        posts.forEach((r) => {
+          if (r.query) set.add(r.query.trim().toLowerCase());
+          if (r.content) {
+            r.content.split(/\s+/).forEach((token) => {
+              if (token.startsWith("#") && token.length > 1) {
+                set.add(token.toLowerCase());
+              }
+            });
+          }
+          if (r.keywords) {
+            r.keywords.split(",").forEach((kw) => {
+              set.add(kw.trim().toLowerCase());
+            });
+          }
+        });
+        setLocalKeywords(Array.from(set).filter(Boolean));
+      }
+    } catch (e) {
+      setLocalKeywords([]);
+    }
   }, []);
+
+  useEffect(() => {
+    // Only show real user-searched keywords/hashtags from DataCollection
+    if (!localKeywords.length) {
+      setCloudWords([]);
+      return;
+    }
+    const layout = cloud()
+      .size([600, 400])
+      .words(localKeywords.map((kw) => ({ text: kw, size: 40 })))
+      .padding(5)
+      .rotate(() => ~~(Math.random() * 2) * 90)
+      .font("Montserrat, Arial, sans-serif")
+      .fontSize((d) => d.size)
+      .on("end", (output) => setCloudWords(output));
+    layout.start();
+  }, [localKeywords]);
 
   // Word click handler
   const handleWordClick = (word) => {
@@ -141,8 +192,28 @@ function WordCloudPage() {
             <Loader />
           ) : error ? (
             <div className="text-red-600 font-semibold mb-4">{error}</div>
+          ) : cloudWords.length ? (
+            <svg width={600} height={400}>
+              <g transform="translate(300,200)">
+                {cloudWords.map((word, i) => (
+                  <text
+                    key={word.text + i}
+                    fontSize={word.size}
+                    fontFamily="Montserrat, Arial, sans-serif"
+                    fontWeight="bold"
+                    fill={getColor(word.text, i)}
+                    textAnchor="middle"
+                    transform={`translate(${word.x},${word.y}) rotate(${word.rotate})`}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => handleWordClick(word)}
+                  >
+                    {word.text}
+                  </text>
+                ))}
+              </g>
+            </svg>
           ) : (
-            <div className="text-gray-500">Word cloud visualization is temporarily unavailable.<br />Please contact the developer to enable this feature with a React 18 compatible library.</div>
+            <div className="text-gray-500">No keywords or hashtags found.</div>
           )}
           <motion.button
             whileHover={{ scale: 1.08 }}

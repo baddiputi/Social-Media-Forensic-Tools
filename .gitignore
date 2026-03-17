@@ -1,2 +1,13 @@
 node_modules/
 .cache/
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+backend/venv/
+venv/
+.env
+*.egg-info/
+dist/
+build/
+.pytest_cache/

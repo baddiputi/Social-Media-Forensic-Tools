@@ -1,75 +1,63 @@
 // src/pages/TimelineAnalysis.jsx
 import React, { useState } from "react";
-import { fetchTimelineAnalysis } from "../services/api";
 import { Line } from "react-chartjs-2";
 import { FaClock } from "react-icons/fa";
-import { motion } from "framer-motion";
 
 function TimelineAnalysis() {
   const [timelineGenerated, setTimelineGenerated] = useState(false);
-  const [timelineData, setTimelineData] = useState({ labels: [], datasets: [] });
-  const [activityLog, setActivityLog] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
-  const generateTimeline = async () => {
-    setLoading(true);
-    setError("");
-    try {
-      const data = await fetchTimelineAnalysis();
-      setTimelineData(data.timeline || { labels: [], datasets: [] });
-      setActivityLog(data.activityLog || []);
-      setTimelineGenerated(true);
-    } catch (err) {
-      setError("Failed to fetch timeline analysis data.");
-    }
-    setLoading(false);
+  // Dummy timeline data
+  const timelineData = {
+    labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    datasets: [
+      {
+        label: "Posts Collected",
+        data: [50, 70, 40, 90, 120, 80, 100],
+        borderColor: "#2563eb",
+        backgroundColor: "rgba(37, 99, 235, 0.3)",
+        fill: true,
+        tension: 0.3,
+      },
+    ],
   };
 
-  return (
-    <div className="relative min-h-screen p-0 md:p-8 flex flex-col items-center justify-center overflow-x-hidden bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
-      {/* Glassmorphism background effect */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-80 h-80 bg-gradient-to-br from-blue-300/30 to-purple-200/20 rounded-full blur-3xl animate-pulse" style={{ filter: 'blur(80px)' }} />
-        <div className="absolute bottom-0 right-0 w-80 h-80 bg-gradient-to-tr from-pink-300/30 to-purple-100/20 rounded-full blur-3xl animate-pulse delay-2000" style={{ filter: 'blur(80px)' }} />
-      </div>
+  // Dummy activity log
+  const activityLog = [
+    { time: "2025-09-01 10:15", event: "High spike in user activity" },
+    { time: "2025-09-02 14:30", event: "Increased negative sentiment detected" },
+    { time: "2025-09-03 09:45", event: "Unusual posting pattern noticed" },
+    { time: "2025-09-04 21:10", event: "Potential coordinated activity" },
+  ];
 
+  return (
+    <div className="p-8 space-y-8">
       {/* Title */}
-      <h1 className="z-10 text-3xl md:text-4xl font-extrabold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 drop-shadow-lg">Timeline Analysis</h1>
-      <p className="z-10 text-gray-600 mb-8 text-lg">Visualize trends and posting behavior over time to detect unusual activity.</p>
+      <h1 className="text-3xl font-bold text-blue-700">Timeline Analysis</h1>
+      <p className="text-gray-600">
+        Visualize trends and posting behavior over time to detect unusual activity.
+      </p>
 
       {/* Generate Timeline Button */}
-
-      <motion.button
-        whileHover={{ scale: 1.04 }}
-        whileTap={{ scale: 0.98 }}
-        onClick={generateTimeline}
-        className="z-10 mb-8 px-8 py-3 rounded-2xl text-white font-bold shadow-xl transition-all duration-200 backdrop-blur-lg border border-white/30 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 hover:from-blue-600 hover:to-pink-600"
-        disabled={timelineGenerated || loading}
+      <button
+        onClick={() => setTimelineGenerated(true)}
+        className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
       >
-        {loading ? "Generating..." : timelineGenerated ? "Timeline Generated" : "Generate Timeline"}
-      </motion.button>
+        Generate Timeline
+      </button>
 
-      {error && (
-        <div className="mb-4 text-red-600 font-semibold bg-red-100 rounded-xl px-4 py-2 shadow">{error}</div>
-      )}
-
-      {loading && (
-        <div className="mb-8 text-lg text-blue-600 font-semibold animate-pulse">Loading timeline analysis...</div>
-      )}
-      {timelineGenerated && !loading && (
+      {timelineGenerated && (
         <>
           {/* Line Chart */}
-          <motion.div className="z-10 w-full max-w-3xl bg-gradient-to-br from-blue-100 via-purple-50 to-white/80 border border-blue-200/40 backdrop-blur-lg rounded-3xl shadow-2xl p-8 mb-8" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-            <h2 className="font-bold text-2xl mb-4 text-blue-700">Posting Trends Over Time</h2>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-xl font-semibold mb-4">Posting Trends Over Time</h2>
             <div className="w-full max-w-2xl mx-auto">
               <Line data={timelineData} />
             </div>
-          </motion.div>
+          </div>
 
           {/* Peak Periods */}
-          <motion.div className="z-10 w-full max-w-2xl bg-gradient-to-br from-green-100 via-yellow-50 to-white/80 border border-green-200/40 backdrop-blur-lg rounded-3xl shadow-2xl p-8 mb-8" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
-            <h2 className="font-bold text-2xl mb-4 text-green-700">Peak Activity Periods</h2>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-xl font-semibold mb-4">Peak Activity Periods</h2>
             <ul className="space-y-2">
               <li className="flex items-center space-x-3">
                 <FaClock className="text-green-600" />
@@ -84,34 +72,30 @@ function TimelineAnalysis() {
                 <span>Thursday - 90 posts</span>
               </li>
             </ul>
-          </motion.div>
+          </div>
 
           {/* Activity Log */}
-          <motion.div className="z-10 w-full max-w-2xl bg-gradient-to-br from-purple-100 via-blue-50 to-white/80 border border-purple-200/40 backdrop-blur-lg rounded-3xl shadow-2xl p-8" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-            <h2 className="font-bold text-2xl mb-4 text-purple-700">Recent Timeline Activity</h2>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-xl font-semibold mb-4">Recent Timeline Activity</h2>
             <div className="overflow-x-auto">
-              <table className="w-full border-collapse rounded-xl overflow-hidden">
+              <table className="w-full border-collapse">
                 <thead>
                   <tr className="bg-blue-50">
-                    <th className="border p-3 text-left">Timestamp</th>
-                    <th className="border p-3 text-left">Event</th>
+                    <th className="border p-2 text-left">Timestamp</th>
+                    <th className="border p-2 text-left">Event</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {activityLog.length === 0 ? (
-                    <tr><td colSpan={2} className="border p-3 text-center text-gray-400">No activity log found.</td></tr>
-                  ) : (
-                    activityLog.map((a, i) => (
-                      <tr key={i} className="hover:bg-purple-50">
-                        <td className="border p-3">{a.time}</td>
-                        <td className="border p-3">{a.event}</td>
-                      </tr>
-                    ))
-                  )}
+                  {activityLog.map((a, i) => (
+                    <tr key={i} className="hover:bg-gray-50">
+                      <td className="border p-2">{a.time}</td>
+                      <td className="border p-2">{a.event}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
-          </motion.div>
+          </div>
         </>
       )}
     </div>

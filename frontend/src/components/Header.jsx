@@ -2,21 +2,15 @@
 import React from "react";
 import { FaShieldAlt } from "react-icons/fa";
 
-import { motion } from "framer-motion";
-
 function Header() {
   return (
-    <motion.header
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      className="backdrop-blur-xl bg-gradient-to-r from-blue-700/80 via-cyan-600/80 to-indigo-700/80 text-white py-4 px-8 shadow-lg flex items-center gap-4 rounded-b-3xl"
-    >
-      <FaShieldAlt size={32} className="drop-shadow-lg" />
-      <h1 className="text-3xl font-extrabold tracking-wide bg-gradient-to-r from-white via-cyan-200 to-blue-200 bg-clip-text text-transparent drop-shadow">
-        SM Forensics Tool
-      </h1>
-    </motion.header>
+    <header className="bg-blue-700 text-white py-4 px-6 shadow-md flex items-center gap-3">
+      <FaShieldAlt size={28} />
+      <div>
+        <h1 className="text-2xl font-bold">SM Forensics Tool</h1>
+        <p className="text-sm">Social Media Forensics & Analytics Dashboard</p>
+      </div>
+    </header>
   );
 }
 
